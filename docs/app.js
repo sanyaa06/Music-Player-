@@ -24,27 +24,23 @@ const playlist = document.getElementById("playlist");
 const addSongBtn = document.getElementById("addSongBtn");
 const addSongInput = document.getElementById("addSongInput");
 
-/***********************
- * DEFAULT SONGS (STATIC FILES)
- ***********************/
+
 const defaultSongs = [
   {
     title: "Supernova",
     artist: "AESPA",
-    src: "assets/audio/aespa - Supernova (1).mp3",
+    src: "assets/audio/aespa - Supernova.mp3",
     img: "assets/images/default.jpeg"
   },
   {
     title: "Hot Mess",
     artist: "AESPA",
-    src: "assets/audio/aespa - Hot Mess.mp3",
+    src: "assets/audio/aespa - HotMess.mp3",
     img: "assets/images/default.jpeg"
   }
 ];
 
-/***********************
- * INDEXED DB SETUP
- ***********************/
+
 const request = indexedDB.open("MusicPlayerDB", 1);
 
 request.onupgradeneeded = (e) => {
@@ -67,9 +63,7 @@ request.onerror = () => {
   console.error("IndexedDB failed to open");
 };
 
-/***********************
- * SEED DEFAULT SONGS (ONLY ONCE)
- ***********************/
+
 function seedDefaultSongsIfEmpty() {
   const tx = db.transaction("songs", "readonly");
   const store = tx.objectStore("songs");
@@ -101,9 +95,7 @@ function seedDefaultSongsIfEmpty() {
   };
 }
 
-/***********************
- * LOAD SONGS FROM DB
- ***********************/
+
 function loadSongsFromDB() {
   songs = [];
 
@@ -135,9 +127,7 @@ function loadSongsFromDB() {
   };
 }
 
-/***********************
- * LOAD SINGLE SONG
- ***********************/
+
 function loadSong(index) {
   const s = songs[index];
   if (!s) return;
@@ -212,9 +202,7 @@ progress.addEventListener("input", () => {
   song.currentTime = (progress.value / 100) * song.duration;
 });
 
-/***********************
- * NEXT / PREVIOUS
- ***********************/
+
 nextBtn.addEventListener("click", () => {
   if (!songs.length) return;
   currentSong = (currentSong + 1) % songs.length;
