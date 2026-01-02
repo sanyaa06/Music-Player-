@@ -212,7 +212,9 @@ progress.addEventListener("input", () => {
   song.currentTime = (progress.value / 100) * song.duration;
 });
 
-
+/***********************
+ * NEXT / PREVIOUS
+ ***********************/
 nextBtn.addEventListener("click", () => {
   if (!songs.length) return;
   currentSong = (currentSong + 1) % songs.length;
