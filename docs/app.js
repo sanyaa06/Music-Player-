@@ -64,36 +64,47 @@ request.onerror = () => {
 };
 
 
-function seedDefaultSongsIfEmpty() {
+async function seedDefaultSongsIfEmpty() {
   const tx = db.transaction("songs", "readonly");
   const store = tx.objectStore("songs");
   const countReq = store.count();
 
   countReq.onsuccess = async () => {
     if (countReq.result === 0) {
-      const writeTx = db.transaction("songs", "readwrite");
-      const writeStore = writeTx.objectStore("songs");
+
+      
+      const preparedSongs = [];
 
       for (const s of defaultSongs) {
         const response = await fetch(s.src);
         const blob = await response.blob();
 
-        writeStore.add({
+        preparedSongs.push({
           title: s.title,
           artist: s.artist,
           audio: blob,
-          img: s.img
+          img: "assets/images/default.jpeg" 
         });
+      }
+
+      
+      const writeTx = db.transaction("songs", "readwrite");
+      const writeStore = writeTx.objectStore("songs");
+
+      for (const song of preparedSongs) {
+        writeStore.add(song);
       }
 
       writeTx.oncomplete = () => {
         loadSongsFromDB();
       };
+
     } else {
       loadSongsFromDB();
     }
   };
 }
+
 
 
 function loadSongsFromDB() {
